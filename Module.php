@@ -26,6 +26,13 @@ class Module
                     $gmClient->addServer();
 
                     return $gmClient;
+                },
+
+                'ZfGearmanPeclManager' => function ($sm) {
+                    $manager = new ZfGearmanPeclManager();
+                    $manager->setServiceLocator($sm);
+
+                    return $manager;
                 }
             )
         );
