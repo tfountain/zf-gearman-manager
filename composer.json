@@ -25,6 +25,6 @@
 
     "require": {
         "php": ">=5.3.3",
-        "tfountain/gearmanmanager": "dev-overhaul"
+        "brianlmoon/gearmanmanager": "dev-overhaul"
     }
 }
