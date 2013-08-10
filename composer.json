@@ -24,7 +24,7 @@
     ],
 
     "require": {
-        "php": ">=5.3.3"
-        "brianlmoon/gearmanmanager": "overhaul"
+        "php": ">=5.3.3",
+        "brianlmoon/gearmanmanager": "dev-overhaul"
     }
 }
