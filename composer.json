@@ -18,7 +18,6 @@
 
     "repositories": [
         {
-            "name": "brianlmoon/gearmanmanager",
             "type": "vcs",
             "url": "https://github.com/tfountain/GearmanManager"
         }
@@ -26,6 +25,6 @@
 
     "require": {
         "php": ">=5.3.3",
-        "brianlmoon/gearmanmanager": "dev-overhaul"
+        "tfountain/gearmanmanager": "dev-overhaul"
     }
 }
