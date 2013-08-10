@@ -16,13 +16,6 @@
         "email": "tim@tfountain.co.uk"
     }],
 
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/tfountain/GearmanManager"
-        }
-    ],
-
     "require": {
         "php": ">=5.3.3",
         "brianlmoon/gearmanmanager": "dev-overhaul"
