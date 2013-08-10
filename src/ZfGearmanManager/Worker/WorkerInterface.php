@@ -1,6 +1,6 @@
 <?php
 
-namespace GearmanManagerBridge;
+namespace ZfGearmanManager;
 
 interface WorkerInterface
 {

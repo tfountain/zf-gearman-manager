@@ -1,6 +1,6 @@
 <?php
 
-namespace GearmanManagerBridge\Worker;
+namespace ZfGearmanManager\Worker;
 
 use Zend\Mvc\Application;
 
