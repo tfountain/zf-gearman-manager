@@ -1,0 +1,30 @@
+{
+    "name": "tfountain/zf-gearman-manager",
+    "description": "ZF2 Gearman Manager",
+
+    "autoload": {
+        "psr-0": {
+            "ZfGearmanManager": "src/"
+        },
+        "classmap": [
+            "./Module.php"
+        ]
+    },
+
+    "authors": [{
+        "name": "Tim Fountain",
+        "email": "tim@tfountain.co.uk"
+    }],
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tfountain/GearmanManager"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.3"
+        "brianlmoon/gearmanmanager": "overhaul"
+    }
+}
