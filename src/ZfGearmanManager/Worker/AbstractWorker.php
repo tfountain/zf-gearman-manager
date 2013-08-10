@@ -2,8 +2,6 @@
 
 namespace ZfGearmanManager\Worker;
 
-use Zend\Mvc\Application;
-
 abstract class AbstractWorker implements WorkerInterface
 {
     protected $sm;
