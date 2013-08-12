@@ -1,10 +1,17 @@
 #!/usr/bin/env php
 <?php
+// NOTE: this script is provided as an example only. You will want to copy
+// this to your application root so that the relative paths are correct
 
-if(!class_exists("GearmanManager\Bridge\GearmanPeclManager")){
-    require __DIR__."/../src/ZfGearmanManager/ZfGearmanPeclManager.php";
-}
+chdir(dirname(__DIR__));
+
+// Setup autoloading
+require 'init_autoloader.php';
+
+// initialise the application (but don't run it)
+$app = Zend\Mvc\Application::init(require 'config/application.config.php');
 
 declare(ticks = 1);
 
-$gm = new ZfGearmanManager\ZfGearmanPeclManager();
+$gm = $app->getServiceManager()->get('ZfGearmanPeclManager');
+$gm->start();
