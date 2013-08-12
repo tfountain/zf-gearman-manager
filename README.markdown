@@ -1,6 +1,8 @@
 ZF Gearman Manager
 ==================
 
+**Note:** I don't consider this code production ready, so use at your own risk. The module only supports PECL Gearman, and if you use it, all your workers must be classes (whereas Gearman Manager on its own supports both worker classes and functions).
+
 This is a Zend Framework 2 module that provides some basic integration between a ZF2 app and Brian Moon's Gearman Manager. Its main feature is to allow worker classes to be setup via. the ZF service locator, which allows app-related dependencies to be passed in.
 
 ## Installation
@@ -26,7 +28,7 @@ Instead of being discovered by scanning folders, with this module workers should
         'do-stuff' => 'Application\Worker\DoStuff'
     )
 
-Since the workers are loaded by the service manager, you need to add an entry for each one to your service config, either as an invokable:
+Since the workers are loaded by the service manager, you need to add an entry for each one to your service config, either as an invokable in `module.config.php`:
 
     'service_manager' => array(
         'invokables' => array(
@@ -34,7 +36,21 @@ Since the workers are loaded by the service manager, you need to add an entry fo
         )
     )
 
-or as a factory (if you have other dependencies that you want passed in).
+or as a factory in `Module.php`:
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Application\Worker\DoStuff' => function ($sm) {
+
+                    // setup and return worker class here
+                }
+            )
+        );
+    }
+
+Note: This module only supports worker classes
 
 ## Running the daemon
 

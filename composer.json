@@ -2,6 +2,13 @@
     "name": "tfountain/zf-gearman-manager",
     "description": "ZF2 Gearman Manager",
 
+    "license": "BSD-3-Clause",
+
+    "authors": [{
+        "name": "Tim Fountain",
+        "email": "tim@tfountain.co.uk"
+    }],
+
     "autoload": {
         "psr-0": {
             "ZfGearmanManager": "src/"
@@ -10,11 +17,6 @@
             "./Module.php"
         ]
     },
-
-    "authors": [{
-        "name": "Tim Fountain",
-        "email": "tim@tfountain.co.uk"
-    }],
 
     "require": {
         "php": ">=5.3.3",
