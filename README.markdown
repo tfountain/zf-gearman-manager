@@ -1,7 +1,7 @@
+**Note:** I don't consider this code production ready, so use at your own risk. The module only supports PECL Gearman, and if you use it, all your workers must be classes (whereas Gearman Manager on its own supports both worker classes and functions).
+
 ZF Gearman Manager
 ==================
-
-**Note:** I don't consider this code production ready, so use at your own risk. The module only supports PECL Gearman, and if you use it, all your workers must be classes (whereas Gearman Manager on its own supports both worker classes and functions).
 
 This is a Zend Framework 2 module that provides some basic integration between a ZF2 app and Brian Moon's Gearman Manager. Its main feature is to allow worker classes to be setup via. the ZF service locator, which allows app-related dependencies to be passed in.
 
