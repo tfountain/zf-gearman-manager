@@ -54,4 +54,6 @@ Note: This module only supports worker classes
 
 ## Running the daemon
 
-The module includes an example `pecl_manager.php` which should be coped to a `bin` folder in your application root. This can then be run with the same command line options as the standard Gearman Manager script, however since this version does not auto-discover worker classes from a folder, but Gearman Manager automatically scans this folder at runtime you'll want to add `-w /dev/null` to avoid an error on startup.
+The module includes an example `pecl_manager.php` which should be coped to a `bin` folder in your application root. This can then be run with the same command line options as the standard Gearman Manager script.
+
+Since this version does not auto-discover worker classes from a folder, you'll also want to specify `-w /dev/null` or you'll get an error when Gearman Manager tries to check your worker dir on startup.
