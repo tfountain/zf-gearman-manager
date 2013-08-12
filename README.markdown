@@ -50,8 +50,6 @@ or as a factory in `Module.php`:
         );
     }
 
-Note: This module only supports worker classes
-
 ## Running the daemon
 
 The module includes an example `pecl_manager.php` which should be coped to a `bin` folder in your application root. This can then be run with the same command line options as the standard Gearman Manager script.
