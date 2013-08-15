@@ -20,6 +20,6 @@
 
     "require": {
         "php": ">=5.3.3",
-        "brianlmoon/gearmanmanager": "dev-overhaul-extendability"
+        "brianlmoon/gearmanmanager": "zf-gearman-manager-fork"
     }
 }
