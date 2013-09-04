@@ -20,6 +20,10 @@
     "repositories": [
         {
             "type": "vcs",
+            "url": "https://github.com/tfountain/zf-gearman-manager.git"
+        },
+        {
+            "type": "vcs",
             "url": "https://github.com/tfountain/GearmanManager.git"
         }
     ],
