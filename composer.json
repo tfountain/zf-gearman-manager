@@ -25,6 +25,6 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "brianlmoon/gearmanmanager": "dev-zf-gearman-manager-fork"
+        "tfountain/gearmanmanager": "dev-zf-gearman-manager-fork"
     }
 }
