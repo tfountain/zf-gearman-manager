@@ -17,7 +17,12 @@
             "./Module.php"
         ]
     },
-
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tfountain/GearmanManager.git"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "brianlmoon/gearmanmanager": "dev-zf-gearman-manager-fork"
