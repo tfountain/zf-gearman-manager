@@ -1,5 +1,5 @@
 {
-    "name": "tfountain/zf-gearman-manager",
+    "name": "chonny/zf-gearman-manager",
     "description": "ZF2 Gearman Manager",
 
     "license": "BSD-3-Clause",
@@ -20,6 +20,6 @@
 
     "require": {
         "php": ">=5.3.3",
-        "brianlmoon/gearmanmanager": "dev-zf-gearman-manager-fork"
+        "tfountain/gearmanmanager": "dev-zf-gearman-manager-fork"
     }
 }
