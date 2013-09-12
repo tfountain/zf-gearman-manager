@@ -49,7 +49,7 @@ or as a factory in `Module.php`:
         );
     }
 
-# Worker class example
+## Worker class example
 
     namespace Application\Worker;
 
@@ -66,9 +66,9 @@ or as a factory in `Module.php`:
         }
     }
 
-# Usage
+## Queueing jobs
 
-For convenience the module defines a service config entry for the Gearman Client using the key 'GearmanClient' (still TODO: configuration to allow this to use separate servers). So with this, to queue a job:
+For convenience the module defines a service config entry for the Gearman Client using the key 'GearmanClient' (still TODO: configuration to allow this to use separate servers). So with this, to queue a job (from a controller):
 
     $gmClient = $this->getServiceLocator()->get('GearmanClient');
     $gmClient->doBackground('do-stuff', $params); // where $params is the job workload (always a string)
