@@ -8,6 +8,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorAwareInterface
 {
+    /**
+     * Service Locator
+     *
+     * @var Zend\ServiceManager\ServiceLocatorInterface
+     */
     protected $sm;
 
     /**
@@ -93,7 +98,6 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
         return $this->sm;
     }
 
-
     /**
      * Helper function to load and filter worker files
      *
@@ -167,6 +171,119 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
     }
 
     /**
+     * Wrapper function handler for all registered functions
+     * This allows us to do some nice logging when jobs are started/finished
+     */
+    public function do_job($job) {
+
+        static $objects;
+
+        if($objects===null) $objects = array();
+
+        $w = $job->workload();
+
+        $h = $job->handle();
+
+        $job_name = $job->functionName();
+
+        if($this->prefix){
+            $func = $this->prefix.$job_name;
+        } else {
+            $func = $job_name;
+        }
+
+        $fqcn = $this->getWorkerFqcn($job_name);
+        if ($fqcn) {
+            $this->log("Creating a $func object", self::LOG_LEVEL_WORKER_INFO);
+            $objects[$job_name] = $this->getServiceLocator()->get($fqcn);
+
+            if (!$objects[$job_name] || !is_object($objects[$job_name])) {
+                $this->log("Invalid worker class registered for $job_name (not an object?)");
+                return;
+            }
+
+            if (!($objects[$job_name] instanceof WorkerInterface)) {
+                $this->log("Worker class registered for $job_name must implement ZfGearmanManager\Worker\WorkerInterface");
+                return;
+            }
+
+        } else {
+            $this->log("Function $func not found");
+            return;
+        }
+
+        $this->log("($h) Starting Job: $job_name", self::LOG_LEVEL_WORKER_INFO);
+
+        $this->log("($h) Workload: $w", self::LOG_LEVEL_DEBUG);
+
+        $log = array();
+
+        /**
+         * Run the real function here
+         */
+        if(isset($objects[$job_name])){
+            $this->log("($h) Calling object for $job_name.", self::LOG_LEVEL_DEBUG);
+            $result = $objects[$job_name]->run($job, $log);
+            unset($objects[$job_name]);
+
+        } elseif(function_exists($func)) {
+            $this->log("($h) Calling function for $job_name.", self::LOG_LEVEL_DEBUG);
+            $result = $func($job, $log);
+        } else {
+            $this->log("($h) FAILED to find a function or class for $job_name.", self::LOG_LEVEL_INFO);
+        }
+
+        if(!empty($log)){
+            foreach($log as $l){
+
+                if(!is_scalar($l)){
+                    $l = explode("\n", trim(print_r($l, true)));
+                } elseif(strlen($l) > 256){
+                    $l = substr($l, 0, 256)."...(truncated)";
+                }
+
+                if(is_array($l)){
+                    foreach($l as $ln){
+                        $this->log("($h) $ln", self::LOG_LEVEL_WORKER_INFO);
+                    }
+                } else {
+                    $this->log("($h) $l", self::LOG_LEVEL_WORKER_INFO);
+                }
+
+            }
+        }
+
+        $result_log = $result;
+
+        if(!is_scalar($result_log)){
+            $result_log = explode("\n", trim(print_r($result_log, true)));
+        } elseif(strlen($result_log) > 256){
+            $result_log = substr($result_log, 0, 256)."...(truncated)";
+        }
+
+        if(is_array($result_log)){
+            foreach($result_log as $ln){
+                $this->log("($h) $ln", self::LOG_LEVEL_DEBUG);
+            }
+        } else {
+            $this->log("($h) $result_log", self::LOG_LEVEL_DEBUG);
+        }
+
+        /**
+         * Workaround for PECL bug #17114
+         * http://pecl.php.net/bugs/bug.php?id=17114
+         */
+        $type = gettype($result);
+        settype($result, $type);
+
+
+        $this->job_execution_count++;
+
+        return $result;
+
+    }
+
+    /**
      * Returns the fully qualified class name (from the module config)
      * for $func, or false if it doesn't exist
      *
@@ -181,33 +298,6 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
         }
 
         return $config['gearman_workers'][$func];
-    }
-
-    /**
-     * Initialiases the worker function
-     *
-     * Overrides the base class version of this method in order to use
-     * the service locator to instantiate the worker class
-     *
-     * @param  string $func
-     * @return object|false
-     */
-    protected function init_func($func)
-    {
-        $fqcn = $this->getWorkerFqcn($func);
-        if (!$fqcn) {
-            return false;
-        }
-
-        $worker = $this->getServiceLocator()->get($fqcn);
-        if ($worker) {
-            $this->log("Creating a $func object", self::LOG_LEVEL_WORKER_INFO);
-            return $worker;
-        }
-
-        $this->log("Function $func not found");
-
-        return false;
     }
 
     /**
