@@ -78,3 +78,9 @@ For convenience the module defines a service config entry for the Gearman Client
 The module includes an example `pecl_manager.php` which should be coped to a `bin` folder in your application root. This can then be run with the same command line options as the standard Gearman Manager script.
 
 Since this version does not auto-discover worker classes from a folder, you'll also want to specify `-w /dev/null` or you'll get an error when Gearman Manager tries to check your worker dir on startup.
+
+You may also want to create an ini configuration file (see Gearman Manager for examples). You can then run this with:
+
+    ./bin/pecl_manager.php -c config/gearman.ini -w /dev/null
+
+as with Gearman Manager, adding `-v` increases verbosity of the output (`-vv` is more verbose, `-vvv` even more, and so on).
