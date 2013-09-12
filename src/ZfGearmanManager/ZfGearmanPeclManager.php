@@ -172,6 +172,79 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
     }
 
     /**
+     * Starts a worker for the PECL library
+     *
+     * Overrides the function from the parent class to remove the error suppression
+     * from worker calls
+     *
+     * @param   array   $worker_list    List of worker functions to add
+     * @param   array   $timeouts       list of worker timeouts to pass to server
+     * @return  void
+     *
+     */
+    protected function start_lib_worker($worker_list, $timeouts = array()) {
+
+        $thisWorker = new \GearmanWorker();
+
+        $thisWorker->addOptions(GEARMAN_WORKER_NON_BLOCKING);
+
+        $thisWorker->setTimeout(5000);
+
+        foreach($this->servers as $s){
+            $this->log("Adding server $s", self::LOG_LEVEL_WORKER_INFO);
+            $thisWorker->addServers($s);
+        }
+
+        foreach($worker_list as $w){
+            $timeout = (isset($timeouts[$w]) ? $timeouts[$w] : null);
+            $message = "Adding job $w";
+            if($timeout){
+                $message.= "; timeout: $timeout";
+            }
+            $this->log($message, self::LOG_LEVEL_WORKER_INFO);
+            $thisWorker->addFunction($w, array($this, "do_job"), $this, $timeout);
+        }
+
+        $start = time();
+
+        while(!$this->stop_work){
+
+            if($thisWorker->work() ||
+               $thisWorker->returnCode() == GEARMAN_IO_WAIT ||
+               $thisWorker->returnCode() == GEARMAN_NO_JOBS) {
+
+                if ($thisWorker->returnCode() == GEARMAN_SUCCESS) continue;
+
+                if (!@$thisWorker->wait()){
+                    if ($thisWorker->returnCode() == GEARMAN_NO_ACTIVE_FDS){
+                        sleep(5);
+                    }
+                }
+
+            }
+
+            /**
+             * Check the running time of the current child. If it has
+             * been too long, stop working.
+             */
+            if($this->max_run_time > 0 && time() - $start > $this->max_run_time) {
+                $this->log("Been running too long, exiting", self::LOG_LEVEL_WORKER_INFO);
+                $this->stop_work = true;
+            }
+
+            if(!empty($this->config["max_runs_per_worker"]) && $this->job_execution_count >= $this->config["max_runs_per_worker"]) {
+                $this->log("Ran $this->job_execution_count jobs which is over the maximum({$this->config['max_runs_per_worker']}), exiting", self::LOG_LEVEL_WORKER_INFO);
+                $this->stop_work = true;
+            }
+
+        }
+
+        $thisWorker->unregisterAll();
+
+
+    }
+
+    /**
      * Wrapper function handler for all registered functions
      * This allows us to do some nice logging when jobs are started/finished
      */
