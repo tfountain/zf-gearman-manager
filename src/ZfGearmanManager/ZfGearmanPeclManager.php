@@ -5,6 +5,7 @@ namespace ZfGearmanManager;
 use GearmanManager\Bridge\GearmanPeclManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Worker\WorkerInterface;
 
 class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorAwareInterface
 {
