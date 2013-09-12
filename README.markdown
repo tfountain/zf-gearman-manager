@@ -22,7 +22,7 @@ The forked Gearman Manager is a fork of the main repo's "overhaul" branch, and c
 
 ## Usage
 
-Instead of being discovered by scanning folders, with this module workers should be specified via. the app config (usually the `module.config.php`). The key is the worker alias, and the value is the fully qualified name of the worker class:
+Instead of being discovered by scanning folders, with this module workers should be specified via. the app config (usually the `module.config.php`). This done using a `gearman_workers` array, where the config is the worker alias, and the value is the fully qualified name of the worker class:
 
     'gearman_workers' => array(
         'do-stuff' => 'Application\Worker\DoStuff'
@@ -43,12 +43,35 @@ or as a factory in `Module.php`:
         return array(
             'factories' => array(
                 'Application\Worker\DoStuff' => function ($sm) {
-
                     // setup and return worker class here
                 }
             )
         );
     }
+
+# Worker class example
+
+    namespace Application\Worker;
+
+    use ZfGearmanManager\Worker\WorkerInterface;
+
+    class DoStuff implements WorkerInterface
+    {
+        public function run($job, &$log)
+        {
+            // get the string passed to the job
+            $workload = $job->workload();
+
+            // do stuff
+        }
+    }
+
+# Usage
+
+For convenience the module defines a service config entry for the Gearman Client using the key 'GearmanClient' (still TODO: configuration to allow this to use separate servers). So with this, to queue a job:
+
+    $gmClient = $this->getServiceLocator()->get('GearmanClient');
+    $gmClient->doBackground('do-stuff', $params); // where $params is the job workload (always a string)
 
 ## Running the daemon
 
