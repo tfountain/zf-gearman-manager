@@ -5,7 +5,7 @@ namespace ZfGearmanManager;
 use GearmanManager\Bridge\GearmanPeclManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Worker\WorkerInterface;
+use ZfGearmanManager\Worker\WorkerInterface;
 
 class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorAwareInterface
 {
@@ -113,7 +113,7 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
 
         $workers = $config['gearman_workers'];
 
-        $this->log('Loading '.count($workers) .' from config');
+        $this->log('Loading '.count($workers) .' worker(s) from config');
 
         $this->functions = array();
 
@@ -204,7 +204,7 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
             }
 
             if (!($objects[$job_name] instanceof WorkerInterface)) {
-                $this->log("Worker class registered for $job_name must implement ZfGearmanManager\Worker\WorkerInterface");
+                $this->log("Worker class ".get_class($objects[$job_name])." registered for $job_name must implement ZfGearmanManager\Worker\WorkerInterface");
                 return;
             }
 
