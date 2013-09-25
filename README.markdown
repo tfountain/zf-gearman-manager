@@ -68,10 +68,18 @@ or as a factory in `Module.php`:
 
 ## Queueing jobs
 
-For convenience the module defines a service config entry for the Gearman Client using the key 'GearmanClient' (still TODO: configuration to allow this to use separate servers). So with this, to queue a job (from a controller):
+For convenience the module defines a service config entry for the Gearman Client using the key 'GearmanClient' (still TODO: configuration to allow multiple servers?). So with this, to queue a job (from a controller):
 
     $gmClient = $this->getServiceLocator()->get('GearmanClient');
     $gmClient->doBackground('do-stuff', $params); // where $params is the job workload (always a string)
+
+Host and port for Gearman Client can be configured through the app config (usually the `module.config.php`).
+This is done using a `gearman_client` array
+
+    'gearman_client' => array(
+        'host' => 'gearmand.local'
+        'port' => 31337
+    )
 
 ## Running the daemon
 
