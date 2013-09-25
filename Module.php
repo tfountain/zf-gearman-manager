@@ -22,8 +22,8 @@ class Module
                 'GearmanClient' => function ($sm) {
                     $gmClient = new \GearmanClient();
                     $config = $sm->get('Config');
-                    if(isset($config['gearman-client'])){
-                        $conf = $config['gearman-client'];
+                    if(isset($config['gearman_client'])){
+                        $conf = $config['gearman_client'];
                     }
                     $host = isset($conf['host']) ? $conf['host'] : '127.0.0.1';
                     $port = isset($conf['port']) ? $conf['port'] : 4730;
