@@ -21,9 +21,15 @@ class Module
             'factories' => array(
                 'GearmanClient' => function ($sm) {
                     $gmClient = new \GearmanClient();
+                    $config = $sm->get('Config');
+                    if(isset($config['gearman_client'])){
+                        $conf = $config['gearman_client'];
+                    }
+                    $host = isset($conf['host']) ? $conf['host'] : '127.0.0.1';
+                    $port = isset($conf['port']) ? $conf['port'] : 4730;
 
-                    // add default server (localhost) - TODO populate this from config
-                    $gmClient->addServer();
+                    // add default server (localhost)
+                    $gmClient->addServer($host, $port);
 
                     return $gmClient;
                 },
