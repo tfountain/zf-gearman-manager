@@ -7,18 +7,21 @@ This is a Zend Framework 2 module that provides some basic integration between a
 
 ## Installation
 
-The module should be installed via. Composer. In addition to adding this module as a dependency you need to add the repository for my forked version of Gearman Manager:
+The module should be installed via. Composer. In addition to adding this module (`zf-gearman-manager`) and it's repository as a dependency, you need to add the repository for my forked version of Gearman Manager (which `zf-gearman-manager` requires). So your composer.json should look something like:
 
     "repositories": [{
         "type": "vcs",
         "url": "https://github.com/tfountain/GearmanManager"
+    },{
+        "type": "vcs",
+        "url": "git@github.com:tfountain/zf-gearman-manager"
     }],
 
     "require": {
         "tfountain/zf-gearman-manager": "dev-master"
     }
 
-The forked Gearman Manager is a fork of the main repo's "overhaul" branch, and contains one additional function to override how the worker classes are instantiated.
+The forked Gearman Manager is a fork of the main repo's "overhaul" branch, and contains some small changes to worker class instantiation and removal of error supression for worker activity.
 
 ## Usage
 
