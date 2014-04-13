@@ -2,6 +2,8 @@
 
 namespace ZfGearmanManager\Worker;
 
+use GearmanJob;
+
 interface WorkerInterface
 {
     /**
