@@ -12,7 +12,7 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
     /**
      * Service Locator
      *
-     * @var Zend\ServiceManager\ServiceLocatorInterface
+     * @var ServiceLocatorInterface
      */
     protected $sm;
 
