@@ -3,6 +3,7 @@
 namespace ZfGearmanManager;
 
 use GearmanManager\Bridge\GearmanPeclManager;
+use GearmanWorker;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfGearmanManager\Worker\WorkerInterface;
@@ -184,7 +185,7 @@ class ZfGearmanPeclManager extends GearmanPeclManager implements ServiceLocatorA
      */
     protected function start_lib_worker($worker_list, $timeouts = array()) {
 
-        $thisWorker = new \GearmanWorker();
+        $thisWorker = new GearmanWorker();
 
         $thisWorker->addOptions(GEARMAN_WORKER_NON_BLOCKING);
 
