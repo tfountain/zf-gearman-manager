@@ -2,6 +2,8 @@
 
 namespace ZfGearmanManager;
 
+use GearmanClient;
+
 class Module
 {
     public function getAutoloaderConfig()
@@ -20,7 +22,7 @@ class Module
         return array(
             'factories' => array(
                 'GearmanClient' => function ($sm) {
-                    $gmClient = new \GearmanClient();
+                    $gmClient = new GearmanClient();
                     $config = $sm->get('Config');
                     if(isset($config['gearman_client'])){
                         $conf = $config['gearman_client'];
